@@ -221,7 +221,7 @@ def ill_chart(d, x, y, w, h):
     d.line(pts, fill=(250, 220, 90), width=4)
     d.polygon([(x + w * 0.90, y + h * 0.16), (x + w * 0.82, y + h * 0.14),
                (x + w * 0.88, y + h * 0.26)], fill=(250, 220, 90))
-    d.text((x + 8, y + 6), "+7%", font=font(SANS_B, 20), fill=(250, 220, 90))
+    d.text((x + 8, y + 6), "+6.3%", font=font(SANS_B, 20), fill=(250, 220, 90))
 
 
 def ill_ucl(d, x, y, w, h):
