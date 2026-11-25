@@ -12,7 +12,7 @@ import shutil
 import struct
 import sys
 
-EXPECTED_MD5 = "ee599eb965815110c14257a0892f55ad"
+EXPECTED_MD5 = "89351179f7edb616eb5e741136062384"
 
 
 def fail(msg):

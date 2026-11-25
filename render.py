@@ -349,25 +349,36 @@ def ill_gaza(d, x, y, w, h):
 
 
 def ill_delta(d, x, y, w, h):
-    """Germany–Ukraine DELTA: tactical control screen with a map,
-    plus small German and Ukrainian flags."""
-    d.rectangle([x, y, x + w, y + h], fill=(16, 32, 54))
-    # screen grid
-    for i in range(1, 5):
-        gx = x + w * i / 5
-        d.line([gx, y, gx, y + h], fill=(40, 70, 100), width=1)
-    for i in range(1, 3):
-        gy = y + h * i / 3
-        d.line([x, gy, x + w, gy], fill=(40, 70, 100), width=1)
-    # tactical map: front line + unit markers
-    pts = [(x + w * 0.06, y + h * 0.62), (x + w * 0.22, y + h * 0.48),
-           (x + w * 0.38, y + h * 0.55), (x + w * 0.52, y + h * 0.38),
-           (x + w * 0.66, y + h * 0.46)]
-    d.line(pts, fill=(80, 200, 120), width=3)
-    for px, py in pts:
-        d.ellipse([px - 4, py - 4, px + 4, py + 4], fill=(250, 220, 90))
-    d.ellipse([x + w * 0.30, y + h * 0.70, x + w * 0.38, y + h * 0.70 + 8],
-              outline=(120, 180, 200), width=2)
+    """Germany–Ukraine DELTA: command / radar screen. Dark console with
+    concentric range rings, a sweeping radar beam and scattered target
+    blips (red / yellow). No connecting line between blips — this is a
+    radar scope, not a market chart. Small German + Ukrainian flags
+    top right."""
+    d.rectangle([x, y, x + w, y + h], fill=(10, 22, 40))
+    # radar scope, centre-left
+    cx, cy = x + w * 0.32, y + h * 0.54
+    for r in (8, 16, 24):
+        d.ellipse([cx - r, cy - r, cx + r, cy + r],
+                  outline=(46, 110, 76), width=1)
+    d.line([cx - 26, cy, cx + 26, cy], fill=(46, 110, 76), width=1)
+    d.line([cx, cy - 26, cx, cy + 24], fill=(46, 110, 76), width=1)
+    # sweep wedge + beam (upper right quadrant)
+    import math
+    a0, a1 = math.radians(-58), math.radians(-38)
+    px0, py0 = cx + 24 * math.cos(a0), cy + 24 * math.sin(a0)
+    px1, py1 = cx + 24 * math.cos(a1), cy + 24 * math.sin(a1)
+    d.polygon([(cx, cy), (px0, py0), (px1, py1)], fill=(26, 80, 56))
+    d.line([cx, cy, cx + 24 * math.cos(a1), cy + 24 * math.sin(a1)],
+           fill=(120, 230, 140), width=2)
+    # target blips: scattered, NOT connected by any line
+    for bx, by, col in ((0.14, 0.30, (230, 60, 50)),
+                        (0.24, 0.74, (250, 210, 60)),
+                        (0.44, 0.24, (230, 60, 50)),
+                        (0.50, 0.70, (250, 210, 60)),
+                        (0.60, 0.42, (230, 60, 50))):
+        px, py = x + w * bx, y + h * by
+        d.ellipse([px - 4, py - 4, px + 4, py + 4], fill=col,
+                  outline=(255, 255, 255), width=1)
     # flags, top right: Germany (black/red/gold) + Ukraine (blue/yellow)
     fx, fy, fw, fh = x + w * 0.72, y + 5, 26, 15
     for i, col in enumerate(((20, 20, 20), (200, 30, 30), (250, 200, 60))):
